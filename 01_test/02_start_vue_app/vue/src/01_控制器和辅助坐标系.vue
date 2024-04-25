@@ -1,4 +1,13 @@
+<!--
+ * @Author: wangcongying
+ * @Date: 2024-04-25 14:17:44
+ * @LastEditTime: 2024-04-25 14:48:14
+ * @Description:
+-->
+<script setup>
 import * as THREE from "three";
+//控制器 可以手动旋转
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 //创建场景
 const scene = new THREE.Scene();
@@ -26,14 +35,37 @@ const cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
 // 设置相机位置
 camera.position.z = 5;
+camera.position.x = 2;
+camera.position.y = 2;
 camera.lookAt(0, 0, 0);
 
+// 添加世界坐标辅助器
+const axesHelper = new THREE.AxesHelper(5);
+scene.add(axesHelper);
+
+// 添加控制器
+const controls = new OrbitControls(camera, renderer.domElement);
+// 设置带阻尼的惯性
+controls.enableDamping = true;
+// 设置阻尼系数
+controls.dampingFactor = 0.05;
+// 设置自动旋转
+controls.autoRotate = true;
 // 渲染函数 自动旋转
 function animate() {
+  controls.update();
   requestAnimationFrame(animate);
-  cube.rotation.x += 0.01;
-  cube.rotation.y += 0.01;
+  // cube.rotation.x += 0.01;
+  // cube.rotation.y += 0.01;
   // 渲染
   renderer.render(scene, camera);
 }
 animate();
+</script>
+
+<template>
+  <div></div>
+</template>
+
+<style>
+</style>
